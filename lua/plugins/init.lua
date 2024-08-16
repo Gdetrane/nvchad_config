@@ -57,15 +57,15 @@ return {
     keys = {
       {
         "<leader>ds",
-        function ()
+        function()
           require("dapui").toggle()
         end,
         silent = true,
       },
     },
     config = function()
-      local dap = require("dap")
-      local dapui = require("dapui")
+      local dap = require "dap"
+      local dapui = require "dapui"
       dapui.setup()
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
@@ -81,10 +81,10 @@ return {
 
   {
     "mfussenegger/nvim-dap",
-    config = function ()
+    config = function()
       vim.keymap.set("n", "<Leader>db", "<cmd>DapToggleBreakpoint<CR>")
       vim.keymap.set("n", "<Leader>dr", "<cmd>DapContinue<CR>")
-    end
+    end,
   },
 
   {
@@ -111,14 +111,22 @@ return {
   {
     "folke/neodev.nvim",
     dependencies = { "rcarriga/nvim-dap-ui" },
-    config = function ()
-      require("neodev").setup({
+    config = function()
+      require("neodev").setup {
         library = { plugins = { "nvim-dap-ui" }, types = true },
-      })
+      }
     end,
   },
 
   ----------------------------
+  ---
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {},
+  },
 
   {
     "nvim-neotest/neotest",
