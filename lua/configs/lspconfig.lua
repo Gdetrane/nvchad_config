@@ -56,6 +56,10 @@ lspconfig.pylsp.setup {
           maxLineLength = 100,
           convention = 'google',
         },
+        pylsp_black = {
+          enabled = true,
+          line_length = 100,
+        },
         pylint = {
           enabled = true,
           executable = "pylint",
@@ -107,7 +111,7 @@ lspconfig.ruff_lsp.setup {
   init_options = {
     settings = {
       -- Any extra cli args for ruff go here
-      args = {},
+      args = {"--line-length=100"},
       lint = {
         run = 'onSave', -- other option is 'onType'
       },
