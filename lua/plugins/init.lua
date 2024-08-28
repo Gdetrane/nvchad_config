@@ -50,6 +50,15 @@ return {
     },
   },
 
+  {
+    "cuducos/yaml.nvim",
+    ft = { "yaml" }, -- optional
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim", -- optional
+    },
+  },
+
   -- DEBUGGERS ---------------
   {
     "rcarriga/nvim-dap-ui",
@@ -136,9 +145,9 @@ return {
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
     config = function()
-      local render_markdown = require('render-markdown')
-      render_markdown.setup({})
-      vim.api.nvim_set_keymap("n", "<leader>mr", ":RenderMarkdown toggle<CR>", { noremap = true, silent = true})
+      local render_markdown = require "render-markdown"
+      render_markdown.setup {}
+      vim.api.nvim_set_keymap("n", "<leader>mr", ":RenderMarkdown toggle<CR>", { noremap = true, silent = true })
     end,
   },
 
