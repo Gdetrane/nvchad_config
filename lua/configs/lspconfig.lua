@@ -104,7 +104,7 @@ lspconfig.pyright.setup {
   },
 }
 
-lspconfig.ruff_lsp.setup {
+lspconfig.ruff.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
@@ -113,7 +113,7 @@ lspconfig.ruff_lsp.setup {
       -- Any extra cli args for ruff go here
       args = {"--line-length=100"},
       lint = {
-        run = 'onSave', -- other option is 'onType'
+        run = 'onType', -- other option is 'onType'
       },
     }
   }
@@ -125,7 +125,7 @@ lspconfig.ruff_lsp.setup {
 --   capabilities = nvlsp.capabilities,
 -- }
 
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
