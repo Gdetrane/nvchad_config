@@ -138,6 +138,10 @@ return {
   },
 
   {
+    "mrjones2014/smart-splits.nvim",
+  },
+
+  {
     "MeanderingProgrammer/render-markdown.nvim",
     cmd = { "RenderMarkdown" },
     opts = {},
