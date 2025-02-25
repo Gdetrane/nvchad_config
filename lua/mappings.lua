@@ -18,20 +18,20 @@ M.general = {
   }
 }
 
-M.dap = {
-  plugin = true,
-  n = {
-    ["<leader>db"] = {"<cmd> DapToggleBreakpoint <CR>"},
-    ["<leader>dus"] = {
-      function ()
-        local widgets = require('dap.ui.widgets');
-        local sidebar = widgets.sidebar(widgets.scopes);
-        sidebar.open()
-      end,
-      "Open debugging sidebar"
-    }
-  }
-}
+-- M.dap = {
+--   plugin = true,
+--   n = {
+--     ["<leader>db"] = {"<cmd> DapToggleBreakpoint <CR>"},
+--     ["<leader>dus"] = {
+--       function ()
+--         local widgets = require('dap.ui.widgets');
+--         local sidebar = widgets.sidebar(widgets.scopes);
+--         sidebar.open()
+--       end,
+--       "Open debugging sidebar"
+--     }
+--   }
+-- }
 --
 -- M.dap_python = {
 --   plugin = true,
