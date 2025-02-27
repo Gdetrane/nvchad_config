@@ -25,8 +25,29 @@ return {
       -- Setup DAP UI and extensions
       dapui.setup()
       require("dap-go").setup()
-      require("dap-python").setup "python" -- Use system Python by default
-      require("nvim-dap-virtual-text").setup({})
+      if os.getenv "PROJECT_ROOT_DIR" ~= nil and os.getenv "VIRTUAL_ENV" ~= nil then
+        local pythonPath = os.getenv "VIRTUAL_ENV" .. "/bin/python"
+        require("dap-python").setup(pythonPath)
+        table.insert(require("dap").configurations.python, 1, {
+          type = "python",
+          request = "attach",
+          name = "Debugpy",
+          justMyCode = false,
+          connect = {
+            host = "127.0.0.1",
+            port = 5678,
+          },
+        })
+      end
+
+      -- setup dap config by VsCode launch.json file
+      local vscode = require "dap.ext.vscode"
+      local json = require "plenary.json"
+      vscode.json_decode = function(str)
+        return vim.json.decode(json.json_strip_comments(str))
+      end
+
+      require("nvim-dap-virtual-text").setup {}
 
       -- Breakpoint signs
       vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticSignError" })
