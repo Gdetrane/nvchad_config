@@ -2,9 +2,11 @@
 require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
+local util = require 'lspconfig.util'
+
 
 -- EXAMPLE
-local servers = { "html", "cssls", "taplo", "docker_compose_language_service"}
+local servers = { "html", "cssls", "taplo", "docker_compose_language_service", "ansiblels" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
@@ -15,6 +17,33 @@ for _, lsp in ipairs(servers) do
     capabilities = nvlsp.capabilities,
   }
 end
+
+lspconfig.ansiblels.setup {
+  cmd = { "ansible-language-server", "--stdio" },
+  filetypes = { "yaml", "yml", "ansible" },
+  settings = {
+    ansible = {
+      ansible = {
+        path = "ansible",
+      },
+      executionEnvironment = {
+        enabled = false,
+      },
+      python = {
+        interpreterPath = "python",
+      },
+      validation = {
+        enabled = true,
+        lint = {
+          enabled = true,
+          path = "ansible-lint",
+        },
+      },
+    },
+  },
+  root_dir = util.root_pattern("ansible.cfg", ".ansible-lint"),
+  single_file_support = false,
+}
 
 lspconfig.jsonls.setup {
   on_attach = nvlsp.on_attach,
@@ -40,8 +69,8 @@ lspconfig.gopls.setup {
       },
       staticcheck = true,
       gofumpt = true,
-    }
-  }
+    },
+  },
 }
 
 lspconfig.pylsp.setup {
@@ -52,9 +81,9 @@ lspconfig.pylsp.setup {
     pylsp = {
       plugins = {
         pycodestyle = {
-          ignore = {'W391'},
+          ignore = { "W391" },
           maxLineLength = 100,
-          convention = 'google',
+          convention = "google",
         },
         pylsp_black = {
           enabled = true,
@@ -67,8 +96,8 @@ lspconfig.pylsp.setup {
             "--load-plugins=pylint_celery,pylint_django",
             "--django-settings-module=hopofy.settings",
             "--suggestion-mode=yes",
-						"--function-naming-style=snake_case",
-						"--include-naming-hint=yes",
+            "--function-naming-style=snake_case",
+            "--include-naming-hint=yes",
           },
         },
         rope_autoimport = {
@@ -81,16 +110,16 @@ lspconfig.pylsp.setup {
           enabled = true,
         },
         pylsp_mypy = { enabled = true },
-      }
-    }
-  }
+      },
+    },
+  },
 }
 
 lspconfig.pyright.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
-  filetypes = {"python"},
+  filetypes = { "python" },
   settings = {
     pyright = {
       disableOrganizeImports = true, -- using Ruff instead
@@ -111,12 +140,12 @@ lspconfig.ruff.setup {
   init_options = {
     settings = {
       -- Any extra cli args for ruff go here
-      args = {"--line-length=100"},
+      args = { "--line-length=100" },
       lint = {
-        run = 'onType', -- other option is 'onType'
+        run = "onType", -- other option is 'onType'
       },
-    }
-  }
+    },
+  },
 }
 
 -- lspconfig.pylsp_mypy.setup {
@@ -131,46 +160,46 @@ lspconfig.ts_ls.setup {
   capabilities = nvlsp.capabilities,
 
   init_options = {
-						preferences = {
-							disableSuggestions = true,
-						},
-					},
-					commands = {
-						OrganizeImports = {
-							function()
-								local params = {
-									command = "_typescript.organizeImports",
-									arguments = { vim.api.nvim_buf_get_name(0) },
-								}
-								vim.lsp.buf.execute_command(params)
-							end,
-							description = "Organize Imports",
-						},
-					},
-					settings = {
-						typescript = {
-							inlayHints = {
-								includeInlayParameterNameHints = "literal",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-								includeInlayFunctionParameterTypeHints = true,
-								includeInlayVariableTypeHints = false,
-								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayEnumMemberValueHints = true,
-							},
-						},
-						javascript = {
-							inlayHints = {
-								includeInlayParameterNameHints = "all",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-								includeInlayFunctionParameterTypeHints = true,
-								includeInlayVariableTypeHints = true,
-								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayEnumMemberValueHints = true,
-							},
-						},
-					},
+    preferences = {
+      disableSuggestions = true,
+    },
+  },
+  commands = {
+    OrganizeImports = {
+      function()
+        local params = {
+          command = "_typescript.organizeImports",
+          arguments = { vim.api.nvim_buf_get_name(0) },
+        }
+        vim.lsp.buf.execute_command(params)
+      end,
+      description = "Organize Imports",
+    },
+  },
+  settings = {
+    typescript = {
+      inlayHints = {
+        includeInlayParameterNameHints = "literal",
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = false,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+    javascript = {
+      inlayHints = {
+        includeInlayParameterNameHints = "all",
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+  },
 }
 
 lspconfig.docker_compose_language_service.setup {
