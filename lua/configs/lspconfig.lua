@@ -2,11 +2,11 @@
 require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
-local util = require 'lspconfig.util'
-
+local util = require "lspconfig.util"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "taplo", "docker_compose_language_service", "ansiblels" }
+local servers =
+  { "html", "cssls", "taplo", "docker_compose_language_service", "ansiblels", "racket_langserver", "ruff" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
@@ -17,6 +17,14 @@ for _, lsp in ipairs(servers) do
     capabilities = nvlsp.capabilities,
   }
 end
+
+lspconfig.racket_langserver.setup {
+  cmd = { "racket", "-l", "racket-langserver" },
+  filetypes = { "racket", "scheme", "scm", "ss", "rkt" },
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+}
 
 lspconfig.ansiblels.setup {
   cmd = { "ansible-language-server", "--stdio" },
@@ -86,11 +94,11 @@ lspconfig.pylsp.setup {
           convention = "google",
         },
         pylsp_black = {
-          enabled = true,
+          enabled = false,
           line_length = 100,
         },
         pylint = {
-          enabled = true,
+          enabled = false,
           executable = "pylint",
           args = {
             "--load-plugins=pylint_celery,pylint_django",
@@ -101,37 +109,46 @@ lspconfig.pylsp.setup {
           },
         },
         rope_autoimport = {
-          enabled = true,
+          enabled = false,
         },
         rope_completion = {
-          enabled = true,
+          enabled = false,
         },
         autopep8 = {
-          enabled = true,
+          enabled = false,
         },
-        pylsp_mypy = { enabled = true },
+        -- pylsp_mypy = { enabled = true },
+        ruff = {
+          enabled = true,
+          formatEnabled = true,
+          config = "$HOME/.config/ruff/ruff.toml",
+          extendSelected = { "I" },
+          extendIgnore = { "C90" },
+          format = { "I" },
+          lineLength = 100,
+        },
       },
     },
   },
 }
 
-lspconfig.pyright.setup {
-  on_attach = nvlsp.on_attach,
-  on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
-  filetypes = { "python" },
-  settings = {
-    pyright = {
-      disableOrganizeImports = true, -- using Ruff instead
-    },
-    python = {
-      analysis = {
-        -- ignore = { '*' }, -- using Ruff instead
-        -- typeCheckingMode = 'off', -- using Mypy instead
-      },
-    },
-  },
-}
+-- lspconfig.pyright.setup {
+--   on_attach = nvlsp.on_attach,
+--   on_init = nvlsp.on_init,
+--   capabilities = nvlsp.capabilities,
+--   filetypes = { "python" },
+--   settings = {
+--     pyright = {
+--       disableOrganizeImports = true, -- using Ruff instead
+--     },
+--     python = {
+--       analysis = {
+--         ignore = { '*' }, -- using Ruff instead
+--         typeCheckingMode = 'off', -- using Mypy instead
+--       },
+--     },
+--   },
+-- }
 
 lspconfig.ruff.setup {
   on_attach = nvlsp.on_attach,

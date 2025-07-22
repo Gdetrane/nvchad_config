@@ -17,6 +17,9 @@ return {
 
       -- Setup Mason first
       require("mason").setup()
+      require("mason-lspconfig").setup {
+        ensure_installed = { "ruff" },
+      }
       require("mason-nvim-dap").setup {
         automatic_installation = true,
         ensure_installed = { "debugpy", "delve" }, -- Actual debug adapters
