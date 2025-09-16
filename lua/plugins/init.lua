@@ -1,4 +1,9 @@
 return {
+  {
+    "fladson/vim-kitty",
+    ft = "kitty",
+    -- tag = "*", -- You can select a tagged version
+  },
   { "augmentcode/augment.vim", event = "VeryLazy" },
   {
     "stevearc/conform.nvim",
